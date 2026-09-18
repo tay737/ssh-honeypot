@@ -9,7 +9,7 @@ description: "198 SSH brute-force attempts from 2 unique IPs across 2 countries 
 
 *Data window: `2026-09-15` 00:00–24:00 UTC · source: ssh-log-to-influx collector · geolocation: ip-api.com*
 
-##At a glance...
+## At a glance...
 
 - **198 attempts** from **2 unique IPs** in **2 countries** (8.2/hour average)
 - **Top attacker:** `45.15.225.137` — 190 attempts (Primanet SRL, Chisinau, Moldova)
