@@ -64,13 +64,12 @@ Separates **data collection**, **storage/visualisation**, and **publication**.
 Reports are organised chronologically, for example:
 
 ```text
-reports/
-└── 2026/
-    └── 09/
-        ├── ssh-threats-2026-09-15.md
-        ├── ssh-threats-2026-09-16.md
-        ├── ssh-threats-2026-09-17.md
-        └── ssh-threats-2026-09-18.md
+2026/
+└── 09/
+  ├── ssh-threats-2026-09-15.md
+  ├── ssh-threats-2026-09-16.md
+  ├── ssh-threats-2026-09-17.md
+  └── ssh-threats-2026-09-18.md
 ```
 
 ---
