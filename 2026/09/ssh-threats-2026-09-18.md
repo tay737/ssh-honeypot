@@ -15,8 +15,8 @@ description: "894 SSH brute-force attempts from 23 unique IPs across 9 countries
 - **Top attacker:** `45.148.10.151` — 95 attempts (Techoff SRV Limited, Amsterdam, The Netherlands)
 - **Top source country:** The Netherlands — 396 (44%)
 - **Most targeted account:** `root` — 693 (78%)
-- ⏱️ **Peak hour:** 14:00–15:00 UTC — 98 attempts
-- 🆕 **First-time attackers:** 14 of 23 IPs had never been seen before this day
+- **Peak hour:** 14:00–15:00 UTC — 98 attempts
+- **First-time attackers:** 14 of 23 IPs had never been seen before this day
 
 ## Top attacking IPs
 
