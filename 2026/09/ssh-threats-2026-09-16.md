@@ -15,8 +15,8 @@ description: "734 SSH brute-force attempts from 26 unique IPs across 13 countrie
 - **Top attacker:** `193.47.62.69` — 65 attempts (BestDC Limited, Andorra la Vella, Andorra)
 - **Top source country:** The Netherlands — 368 (50%)
 - **Most targeted account:** `root` — 562 (77%)
-- ⏱️ **Peak hour:** 07:00–08:00 UTC — 64 attempts
-- 🆕 **First-time attackers:** 26 of 26 IPs had never been seen before this day
+- **Peak hour:** 07:00–08:00 UTC — 64 attempts
+- **First-time attackers:** 26 of 26 IPs had never been seen before this day
 
 ## Top attacking IPs
 
