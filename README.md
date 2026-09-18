@@ -46,7 +46,7 @@ The project follows this pipeline:
        │             │  │    .py        │
        └─────────────┘  └───────┬───────┘
                                 │
-                         Daily .md
+                         Daily .md file
                                 │
                                 ▼
                          ┌─────────────┐
