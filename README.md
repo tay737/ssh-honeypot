@@ -71,7 +71,15 @@ Reports are organised chronologically, for example:
   ├── ssh-threats-2026-09-17.md
   └── ssh-threats-2026-09-18.md
 ```
+## Report script + example config files from my server (if you want to try this yourself)
 
+daily-report.py
+collector/
+  ├── index.js
+renderer/
+  ├── config,json
+rsyslog/
+  ├── docker-compose.yml
 ---
 
 # How It Works
