@@ -9,7 +9,7 @@ description: "894 SSH brute-force attempts from 23 unique IPs across 9 countries
 
 *Data window: `2026-09-18` 00:00–24:00 UTC · source: ssh-log-to-influx collector · geolocation: ip-api.comday in progress, stats partial*
 
-##At a glance...
+## At a glance...
 
 - **894 attempts** from **23 unique IPs** in **9 countries** (37.2/hour average)
 - **Top attacker:** `45.148.10.151` — 95 attempts (Techoff SRV Limited, Amsterdam, The Netherlands)
