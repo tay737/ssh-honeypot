@@ -9,6 +9,7 @@ description: "198 SSH brute-force attempts from 2 unique IPs across 2 countries 
 
 *Data window: `2026-09-15` 00:00–24:00 UTC · source: ssh-log-to-influx collector · geolocation: ip-api.com*
 
+<img width="2000" height="1240" alt="ssh-threats-2026-09-15" src="https://github.com/user-attachments/assets/d3f14181-66d6-4704-b064-78913e4f5844" />
 
 ## At a glance...
 
