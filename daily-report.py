@@ -52,12 +52,12 @@ def _default_auth():
 
 
 GRAFANA_AUTH = _default_auth()
-# geomap panel on the "SSH Login Attempts — Geohash" dashboard
+# geomap panel
 MAP_PANEL_ID = 3
 MAP_DASHBOARD_SLUG = "ssh-login-attempts-e28094-geohash"
 MAP_WIDTH = 1000
 MAP_HEIGHT = 620
-IMAGE_SCALE = 2  # device pixel ratio -> crisper PNG for the blog
+IMAGE_SCALE = 2 
 
 TOP_IPS = 15
 TOP_COUNTRIES = 12
@@ -143,7 +143,7 @@ def render_map_png(day_start, day_end, out_path):
     return True, f"{len(body):,} bytes"
 
 
-# ------------------------------------------------------------- gatherers ---
+#  gatherers 
 def collect(day_start, day_end, in_day_q, before_start_q):
     """Run all queries for the day; return dict of assembled data."""
     d = {}
