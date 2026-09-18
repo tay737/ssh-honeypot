@@ -15,8 +15,8 @@ description: "12 SSH brute-force attempts from 2 unique IPs across 2 countries h
 - **Top attacker:** `178.175.167.40` — 6 attempts (Studio An-tv SRL, Anenii Noi, Moldova)
 - **Top source country:** Andorra — 6 (50%)
 - **Most targeted account:** `root` — 12 (100%)
-- ⏱️ **Peak hour:** 22:00–23:00 UTC — 6 attempts
-- 🆕 **First-time attackers:** 2 of 2 IPs had never been seen before this day
+- **Peak hour:** 22:00–23:00 UTC — 6 attempts
+- **First-time attackers:** 2 of 2 IPs had never been seen before this day
 
 ## Top attacking IPs
 
