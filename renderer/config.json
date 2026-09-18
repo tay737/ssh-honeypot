@@ -1,0 +1,21 @@
+{
+  "service": {
+    "enableGzip": true
+  },
+  "rendering": {
+    "chromeArgs": ["--no-sandbox", "--disable-gpu", "--disable-dev-shm-usage"],
+    "timezone": "utc",
+    "language": "en-US",
+    "verboseLogging": false,
+    "width": 1200,
+    "height": 700,
+    "map": {
+      "basemap": {
+        "type": "tiles",
+        "tileUrl": "https://services.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}",
+        "tileSize": 256,
+        "attribution": "Tiles © Esri — Esri, DeLorme, NAVTEQ"
+      }
+    }
+  }
+}
