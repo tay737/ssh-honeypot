@@ -15,8 +15,8 @@ description: "198 SSH brute-force attempts from 2 unique IPs across 2 countries 
 - **Top attacker:** `45.15.225.137` — 190 attempts (Primanet SRL, Chisinau, Moldova)
 - **Top source country:** Moldova — 190 (96%)
 - **Most targeted account:** `root` — 24 (12%)
-- ⏱️ **Peak hour:** 22:00–23:00 UTC — 198 attempts
-- 🆕 **First-time attackers:** 2 of 2 IPs had never been seen before this day
+- **Peak hour:** 22:00–23:00 UTC — 198 attempts
+- **First-time attackers:** 2 of 2 IPs had never been seen before this day
 
 ## Top attacking IPs
 
