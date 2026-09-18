@@ -9,7 +9,7 @@ description: "12 SSH brute-force attempts from 2 unique IPs across 2 countries h
 
 *Data window: `2026-09-17` 00:00–24:00 UTC · source: ssh-log-to-influx collector · geolocation: ip-api.com*
 
-##At a glance...
+## At a glance...
 
 - **12 attempts** from **2 unique IPs** in **2 countries** (0.5/hour average)
 - **Top attacker:** `178.175.167.40` — 6 attempts (Studio An-tv SRL, Anenii Noi, Moldova)
