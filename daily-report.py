@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 """Daily SSH honeypot threat report generator.
 
-Queries the InfluxDB `geossh` measurement (populated by ssh-log-to-influx
-collector + historical backfill) for each day (UTC) > writes an
-easily-readable .md report.
+Queries the InfluxDB `geossh` measurement for each day (UTC) > writes an
+easily-readable .md report, including a PNG snapshot of the Grafana
+geomap panel (rendered with the remote grafana-image-renderer service).
 
 Usage:
     python3 daily-report.py                      
@@ -11,17 +11,53 @@ Usage:
     python3 daily-report.py --from 2026-09-15 --to 2026-09-18   # one file per day
     python3 daily-report.py --date 2026-09-18 --stdout
     python3 daily-report.py --date 2026-09-18 --no-front-matter
+    python3 daily-report.py --date 2026-09-18 --no-image   # skip the map capture
 
-Output:  <output-directory>/ssh-threats-<YYYY-MM-DD>.md 
+Output:  <output-directory>/ssh-threats-<YYYY-MM-DD>.md (+ .png)
 """
 import argparse
 import json
+import os
 import subprocess
 import sys
+import urllib.error
+import urllib.request
 from datetime import datetime, timedelta, timezone
 
 CONTAINER = "ssh-influxdb"
 DB = "ssh_logs"
+
+# Grafana map snapshot
+GRAFANA = os.environ.get("GRAFANA_URL", "http://192.168.0.40:3000")
+
+
+def _default_auth():
+    """Auth for the render API."""
+    env_auth = os.environ.get("GRAFANA_AUTH")
+    if env_auth:
+        return env_auth
+    candidates = [
+        os.path.join(os.path.dirname(os.path.abspath(__file__)), ".env"),
+        "/opt/ssh-dashboard/.env",
+    ]
+    for env_file in candidates:
+        try:
+            with open(env_file) as f:
+                for line in f:
+                    if line.startswith("GRAFANA_ADMIN_PASSWORD="):
+                        return f"admin:{line.split('=', 1)[1].strip()}"
+        except OSError:
+            continue
+    return "admin:changeme"
+
+
+GRAFANA_AUTH = _default_auth()
+# geomap panel on the "SSH Login Attempts — Geohash" dashboard
+MAP_PANEL_ID = 3
+MAP_DASHBOARD_SLUG = "ssh-login-attempts-e28094-geohash"
+MAP_WIDTH = 1000
+MAP_HEIGHT = 620
+IMAGE_SCALE = 2  # device pixel ratio -> crisper PNG for the blog
 
 TOP_IPS = 15
 TOP_COUNTRIES = 12
@@ -31,7 +67,7 @@ TOP_ASNS = 6
 BLOCKLIST_SIZE = 10
 
 
-# ---------------------------------------------------------------- influx ---
+# influx
 def influx_query(q):
     cmd = [
         "docker", "exec", CONTAINER, "curl", "-s", "-G",
@@ -74,6 +110,39 @@ def hhmm(iso_ts):
         return "–"
 
 
+# map snapshot
+def render_map_png(day_start, day_end, out_path):
+    """Capture the dashboard's geomap panel for the day's window via
+    Grafana's /render/d-solo endpoint (remote grafana-image-renderer).
+    Returns (ok, note)."""
+    import base64
+
+    url = (
+        f"{GRAFANA}/render/d-solo/ssh-login-attempts/{MAP_DASHBOARD_SLUG}"
+        f"?orgId=1&panelId={MAP_PANEL_ID}"
+        f"&from={int(day_start.timestamp() * 1000)}"
+        f"&to={int(day_end.timestamp() * 1000)}"
+        f"&width={MAP_WIDTH}&height={MAP_HEIGHT}&scale={IMAGE_SCALE}"
+        f"&tz=UTC%2B00%3A00"
+    )
+    req = urllib.request.Request(url)
+    token = base64.b64encode(GRAFANA_AUTH.encode()).decode()
+    req.add_header("Authorization", f"Basic {token}")
+    try:
+        with urllib.request.urlopen(req, timeout=120) as resp:
+            body = resp.read()
+    except urllib.error.HTTPError as e:
+        return False, f"HTTP {e.code}: {e.read()[:200].decode(errors='replace')}"
+    except Exception as e:  # noqa: BLE001
+        return False, str(e)
+
+    if body[:8] != b"\x89PNG\r\n\x1a\n":
+        return False, f"not a PNG response: {body[:120]!r}"
+    with open(out_path, "wb") as f:
+        f.write(body)
+    return True, f"{len(body):,} bytes"
+
+
 # ------------------------------------------------------------- gatherers ---
 def collect(day_start, day_end, in_day_q, before_start_q):
     """Run all queries for the day; return dict of assembled data."""
@@ -106,7 +175,7 @@ def collect(day_start, day_end, in_day_q, before_start_q):
             key = tags.get(tag)
             if key and r.get("count"):
                 meta.setdefault(key, {})
-                
+
     per_ip_meta = {}
     for tags, r in rows(influx_query(
             f'SELECT count("value") FROM "geossh" WHERE {in_day_q} '
@@ -117,7 +186,6 @@ def collect(day_start, day_end, in_day_q, before_start_q):
         if cur is None or cnt > cur[0]:
             per_ip_meta[ip] = (cnt, tags)
     d["ip_meta"] = {ip: t for ip, (c, t) in per_ip_meta.items()}
-
 
     def tally(tag):
         out = {}
@@ -141,7 +209,6 @@ def collect(day_start, day_end, in_day_q, before_start_q):
         cities[label] = cities.get(label, 0) + int(r.get("count") or 0)
     d["cities"] = cities
 
-    
     hours = [0] * 24
     for _, r in rows(influx_query(
             f'SELECT count("value") FROM "geossh" WHERE {in_day_q} '
@@ -154,7 +221,6 @@ def collect(day_start, day_end, in_day_q, before_start_q):
             pass
     d["hours"] = hours
 
-    
     before = set()
     for tags, _ in rows(influx_query(
             f'SELECT count("value") FROM "geossh" WHERE {before_start_q} GROUP BY "ip"')):
@@ -185,7 +251,7 @@ def top(d, n):
     return sorted(d.items(), key=lambda kv: kv[1], reverse=True)[:n]
 
 
-def build_report(day, data, now_utc, front_matter=True):
+def build_report(day, data, now_utc, front_matter=True, image_note=None):
     start, end = day_bounds(day)
     in_progress = start <= now_utc < end
     total = data["total"]
@@ -211,13 +277,29 @@ def build_report(day, data, now_utc, front_matter=True):
        ("day in progress, stats partial" if in_progress else "") + "*")
     ap("")
 
+    # map snapshot
+    ap(f"## Attack map — {day}")
+    ap("")
+    if image_note and image_note.get("ok"):
+        ap(f"![Geographic distribution of SSH brute-force attempts on {day}]"
+           f"({image_note['relpath']})")
+        ap("")
+        ap("*Live interactive version: Grafana → Security → "
+           "“SSH Login Attempts — Geohash”.*")
+    else:
+        reason = image_note.get("note", "rendering unavailable") if image_note else \
+            "rendering unavailable"
+        ap(f"*Map snapshot unavailable ({reason}). "
+           "Live interactive version: Grafana → Security → "
+           "“SSH Login Attempts — Geohash”.*")
+    ap("")
 
     peak_h = max(range(24), key=lambda h: data["hours"][h]) if total else 0
     peak_v = data["hours"][peak_h]
     top_ip = top(data["ips"], 1)
     top_user = top(data["usernames"], 1)
     top_cc = top(data["countries"], 1)
-    ap("## At a glance...")
+    ap("## At a glance")
     ap("")
     if total:
         ip, ipn = top_ip[0] if top_ip else ("—", 0)
@@ -240,8 +322,7 @@ def build_report(day, data, now_utc, front_matter=True):
         ap("- Quiet day — **no attempts recorded**.")
     ap("")
 
-
-    ap(f"## Top attacking IPs")
+    ap("## Top attacking IPs")
     ap("")
     if data["ips"]:
         rows_ = []
@@ -255,7 +336,6 @@ def build_report(day, data, now_utc, front_matter=True):
         ap("_No attacking IPs._")
     ap("")
 
-
     ap("## Attempts by country")
     ap("")
     if data["countries"]:
@@ -266,7 +346,6 @@ def build_report(day, data, now_utc, front_matter=True):
         ap("_None._")
     ap("")
 
-
     ap("## Attempts by region / city")
     ap("")
     if data["cities"]:
@@ -276,7 +355,6 @@ def build_report(day, data, now_utc, front_matter=True):
     else:
         ap("_None._")
     ap("")
-
 
     ap("## Targeted usernames")
     ap("")
@@ -319,11 +397,10 @@ def build_report(day, data, now_utc, front_matter=True):
         ap("_No activity._")
     ap("")
 
-    
     if total:
         ap("## Recommended blocklist")
         ap("")
-        ap("Top offenders of the day, one per line (drop-in for firewall:")
+        ap("Top offenders of the day, one per line (drop-in for firewall):")
         ap("")
         ap("```text")
         for ip, _ in top(data["ips"], BLOCKLIST_SIZE):
@@ -350,19 +427,34 @@ def build_report(day, data, now_utc, front_matter=True):
     return "\n".join(L)
 
 
-# ------------------------------------------------------------------ main ---
-def generate_for_day(day, out_dir, stdout=False, front_matter=True):
+# main
+def generate_for_day(day, out_dir, stdout=False, front_matter=True, with_image=True):
     start, end = day_bounds(day)
     in_day_q = f"time >= '{rfc(start)}' AND time < '{rfc(end)}'"
     before_start_q = f"time < '{rfc(start)}'"
     data = collect(start, end, in_day_q, before_start_q)
-    md = build_report(day, data, datetime.now(timezone.utc), front_matter)
+
+    image_note = None
+    png_path = None
+    if with_image and data["total"]:
+        png_path = f"{out_dir}/ssh-threats-{day}.png"
+        ok, note = render_map_png(start, end, png_path)
+        if not ok:
+            print(f"[{day}] map render failed: {note}", file=sys.stderr)
+            try:
+                os.remove(png_path)
+            except OSError:
+                pass
+            png_path = None
+        image_note = {"ok": ok, "relpath": os.path.basename(png_path or ""), "note": note}
+
+    md = build_report(day, data, datetime.now(timezone.utc), front_matter, image_note)
     if stdout:
         print(md)
     path = f"{out_dir}/ssh-threats-{day}.md"
     with open(path, "w") as f:
         f.write(md)
-    return path, data
+    return path, data, png_path
 
 
 def main():
@@ -370,10 +462,13 @@ def main():
     p.add_argument("--date", help="single day YYYY-MM-DD (default: yesterday UTC)")
     p.add_argument("--from", dest="from_", help="range start YYYY-MM-DD (inclusive)")
     p.add_argument("--to", dest="to_", help="range end YYYY-MM-DD (inclusive)")
-    p.add_argument("--out", default="reports", help="output directory (default: ./reports)")
+    p.add_argument("--out", default="/home/user",
+                   help="output directory (default: /home/user)")
     p.add_argument("--stdout", action="store_true", help="also print the report")
     p.add_argument("--no-front-matter", action="store_true",
                    help="omit YAML front matter (plain Markdown)")
+    p.add_argument("--no-image", action="store_true",
+                   help="skip the Grafana map snapshot")
     args = p.parse_args()
 
     now = datetime.now(timezone.utc)
@@ -388,13 +483,14 @@ def main():
     else:
         days = [(now - timedelta(days=1)).date().isoformat()]
 
-    import os
     os.makedirs(args.out, exist_ok=True)
     for day in days:
-        path, data = generate_for_day(day, args.out, args.stdout,
-                                      not args.no_front_matter)
+        path, data, png = generate_for_day(day, args.out, args.stdout,
+                                           not args.no_front_matter,
+                                           not args.no_image)
         print(f"[{day}] total={data['total']:,} ips={len(data['ips'])} "
-              f"countries={len(data['countries'])} -> {path}")
+              f"countries={len(data['countries'])} -> {path}"
+              + (f" + {os.path.basename(png)}" if png else " (no map image)"))
 
 
 if __name__ == "__main__":
