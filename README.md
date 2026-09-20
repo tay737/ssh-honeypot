@@ -83,7 +83,7 @@ rsyslog/
 ```
 ---
 
-# How It Works
+# How it works
 
 ## 1. SSH Honeypot
 
@@ -104,7 +104,7 @@ Provides the raw event data > processed by the collector.
 
 ---
 
-## 2. Data Collection
+## 2. Data collection
 
 A collector script processes the SSH/honeypot logs > sends the resulting events to InfluxDB.
 
@@ -138,7 +138,7 @@ These values are defined near the beginning of `daily-report.py`.
 
 ---
 
-## 3. Data Enrichment
+## 3. Data enrichment
 
 Source IP addresses are enriched with additional information, including:
 
@@ -204,7 +204,7 @@ This gives the project two complementary views:
 
 ---
 
-# Daily Report Generation
+# Daily report generation
 
 The `daily-report.py` script queries InfluxDB and generates a Markdown report for each UTC calendar day.
 
@@ -234,7 +234,7 @@ The script generates one report per day in the requested range.
 
 ---
 
-## UTC Calendar Days
+## UTC calendar days
 
 Reports deliberately use **UTC calendar days** rather than the server's local timezone.
 
@@ -295,7 +295,7 @@ This allows reports to distinguish between:
 # What's included in a daily report?
 
 
-## At a Glance
+## At a glance
 
 * Total SSH attempts
 * Number of unique IP addresses
@@ -324,27 +324,27 @@ This allows reports to distinguish between:
 * Percentage of total
 * Relative visual bar
 
-## Attempts by Region / City
+## Attempts by region/city
 
 Displays the top **12 locations**.
 
-## Targeted Usernames
+## Targeted usernames
 
 Attempted usernames are aggregated to show which accounts attackers are attempting to authenticate against.
 
 Displays the top **12 usernames**.
 
-## Top Networks
+## Top networks
 
 Botnet / network information is also included.
 
 The default report displays the top **6 networks**.
 
-## First-Time Attackers
+## First-Time attackers
 
 The report lists IP addresses that had not previously appeared in the dataset before the reporting day.
 
-## Hourly Timeline
+## Hourly timeline
 
 Activity is grouped into 24 UTC hours.
 
@@ -447,9 +447,9 @@ These command-line options are implemented directly by the report generator.
 
 ---
 
-# Report Metadata
+# Report metadata
 
-Reports can include YAML front matter containing information such as:
+Reports include YAML front matter:
 
 ```yaml
 ---
@@ -459,9 +459,6 @@ tags: [honeypot, ssh, security, threat-intel, brute-force]
 description: "Daily SSH brute-force activity observed by the honeypot."
 ---
 ```
-
-This makes the generated Markdown suitable for static-site generators and other Markdown-aware tooling.
-
 ---
 
 
