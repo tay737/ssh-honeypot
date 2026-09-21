@@ -2,129 +2,138 @@
 title: "Daily SSH Honeypot Threat Report — 2026-09-20"
 date: 2026-09-20T06:00:00Z
 tags: [honeypot, ssh, security, threat-intel, brute-force]
-description: "881 SSH brute-force attempts from 34 unique IPs across 15 countries hit the honeypot on 2026-09-20."
+description: "1527 SSH brute-force attempts from 70 unique IPs across 24 countries hit the honeypot on 2026-09-20."
 ---
 
 # Daily SSH Honeypot Threat Report — 2026-09-20
 
-*Data window: `2026-09-20` 00:00–24:00 UTC · source: ssh-log-to-influx collector · geolocation: ip-api.comday in progress, stats partial*
+*Data window: `2026-09-20` 00:00–24:00 UTC · source: ssh-log-to-influx collector · geolocation: ip-api.com*
 
 ## Attack map — 2026-09-20
 
-<img width="2000" height="1240" alt="ssh-threats-2026-09-20" src="https://github.com/user-attachments/assets/299f427e-7739-4540-8fe3-e789e3eb30df" />
+<img width="2000" height="1240" alt="ssh-threats-2026-09-20" src="https://github.com/user-attachments/assets/5bb06522-8636-49f6-885c-cbfad76c76cc" />
 
 *Live interactive version: Grafana → Security → “SSH Login Attempts — Geohash”.*
 
 ## At a glance
 
-- **881 attempts** from **34 unique IPs** in **15 countries** (36.7/hour average)
-- **Top attacker:** `45.148.10.141` — 75 attempts (Techoff SRV Limited, Amsterdam, The Netherlands)
-- **Top source country:** The Netherlands — 335 (38%)
-- **Most targeted account:** `root` — 606 (69%)
-- **Peak hour:** 02:00–03:00 UTC — 123 attempts
-- **First-time attackers:** 21 of 34 IPs had never been seen before this day
+- **1,527 attempts** from **70 unique IPs** in **24 countries** (63.6/hour average)
+- **Top attacker:** `45.148.10.141` — 105 attempts (Techoff SRV Limited, Amsterdam, The Netherlands)
+- **Top source country:** The Netherlands — 496 (32%)
+- **Most targeted account:** `root` — 947 (62%)
+- **Peak hour:** 16:00–17:00 UTC — 129 attempts
+- **First-time attackers:** 55 of 70 IPs had never been seen before this day
 
 ## Top attacking IPs
 
 | # | IP | Attempts | Share | ISP | Location | First | Last |
 |---|---|---|---|---|---|---|---|
-| 1 | `45.148.10.141` | 75 | 8.5% | Techoff SRV Limited | Amsterdam, The Netherlands | 00:08 | 12:01 |
-| 2 | `45.148.10.151` | 65 | 7.4% | Techoff SRV Limited | Amsterdam, The Netherlands | 00:24 | 11:51 |
-| 3 | `109.160.32.62` | 60 | 6.8% | TechTies Inc. | Cornelius, United States | 09:52 | 11:48 |
-| 4 | `193.47.62.69` | 60 | 6.8% | BestDC Limited | Andorra la Vella, Andorra | 00:30 | 11:41 |
-| 5 | `45.148.10.157` | 55 | 6.2% | Techoff SRV Limited | Amsterdam, The Netherlands | 00:35 | 11:46 |
-| 6 | `62.60.130.201` | 50 | 5.7% | Cipher Operations DOO Beograd - Novi Beograd | Tehran, Iran | 00:19 | 11:20 |
-| 7 | `77.239.124.184` | 47 | 5.3% | Banatsync SRL | Paris, France | 05:18 | 06:42 |
-| 8 | `109.160.32.75` | 45 | 5.1% | TechTies Inc. | Cornelius, United States | 05:53 | 07:15 |
-| 9 | `45.148.10.152` | 45 | 5.1% | Techoff SRV Limited | Amsterdam, The Netherlands | 00:03 | 11:36 |
-| 10 | `62.60.130.242` | 45 | 5.1% | Cipher Operations DOO Beograd - Novi Beograd | Tehran, Iran | 02:26 | 12:17 |
-| 11 | `62.60.130.253` | 38 | 4.3% | Cipher Operations DOO Beograd - Novi Beograd | Tehran, Iran | 02:36 | 11:56 |
-| 12 | `4.240.96.30` | 28 | 3.2% | Microsoft Corporation | Pune, India | 02:40 | 04:13 |
-| 13 | `80.94.92.179` | 28 | 3.2% | Unmanaged LTD | Amsterdam, The Netherlands | 00:26 | 01:39 |
-| 14 | `2.57.122.238` | 26 | 3.0% | Unmanaged LTD | Amsterdam, The Netherlands | 03:35 | 04:35 |
-| 15 | `45.181.45.238` | 20 | 2.3% | Generacion Wi-fi SA | Necochea, Argentina | 05:22 | 06:03 |
+| 1 | `45.148.10.141` | 105 | 6.9% | Techoff SRV Limited | Amsterdam, The Netherlands | 00:08 | 21:15 |
+| 2 | `193.47.62.69` | 85 | 5.6% | BestDC Limited | Andorra la Vella, Andorra | 00:30 | 21:25 |
+| 3 | `45.148.10.151` | 85 | 5.6% | Techoff SRV Limited | Amsterdam, The Netherlands | 00:24 | 21:45 |
+| 4 | `45.148.10.152` | 70 | 4.6% | Techoff SRV Limited | Amsterdam, The Netherlands | 00:03 | 21:35 |
+| 5 | `109.160.32.62` | 60 | 3.9% | TechTies Inc. | Cornelius, United States | 09:52 | 11:48 |
+| 6 | `45.148.10.157` | 60 | 3.9% | Techoff SRV Limited | Amsterdam, The Netherlands | 00:35 | 16:59 |
+| 7 | `62.60.130.201` | 60 | 3.9% | Cipher Operations DOO Beograd - Novi Beograd | Tehran, Iran | 00:19 | 21:30 |
+| 8 | `62.60.130.242` | 60 | 3.9% | Cipher Operations DOO Beograd - Novi Beograd | Tehran, Iran | 02:26 | 21:51 |
+| 9 | `109.160.32.64` | 56 | 3.7% | TechTies Inc. | Cornelius, United States | 14:09 | 15:54 |
+| 10 | `62.60.130.253` | 53 | 3.5% | Cipher Operations DOO Beograd - Novi Beograd | Tehran, Iran | 02:36 | 21:10 |
+| 11 | `77.239.124.184` | 47 | 3.1% | Banatsync SRL | Paris, France | 05:18 | 06:42 |
+| 12 | `109.160.32.75` | 45 | 2.9% | TechTies Inc. | Cornelius, United States | 05:53 | 07:15 |
+| 13 | `2.57.122.150` | 45 | 2.9% | Unmanaged LTD | Amsterdam, The Netherlands | 01:59 | 16:17 |
+| 14 | `2.57.122.209` | 36 | 2.4% | Unmanaged LTD | Amsterdam, The Netherlands | 12:49 | 23:26 |
+| 15 | `4.240.96.30` | 28 | 1.8% | Microsoft Corporation | Pune, India | 02:40 | 04:13 |
 
 ## Attempts by country
 
 | Country | Attempts | Share |  |
 |---|---|---|---|
-| The Netherlands | 335 | 38.0% | ████████············ |
-| Iran | 133 | 15.1% | ███················· |
-| United States | 111 | 12.6% | ███················· |
-| Andorra | 65 | 7.4% | █··················· |
-| China | 50 | 5.7% | █··················· |
-| France | 47 | 5.3% | █··················· |
-| India | 45 | 5.1% | █··················· |
-| Argentina | 20 | 2.3% | ···················· |
-| Italy | 19 | 2.2% | ···················· |
-| South Africa | 18 | 2.0% | ···················· |
-| Bolivia | 17 | 1.9% | ···················· |
-| Russia | 13 | 1.5% | ···················· |
+| The Netherlands | 496 | 32.5% | ██████·············· |
+| United States | 217 | 14.2% | ███················· |
+| Iran | 173 | 11.3% | ██·················· |
+| Andorra | 90 | 5.9% | █··················· |
+| China | 75 | 4.9% | █··················· |
+| Russia | 65 | 4.3% | █··················· |
+| France | 54 | 3.5% | █··················· |
+| Vietnam | 50 | 3.3% | █··················· |
+| India | 45 | 2.9% | █··················· |
+| South Korea | 37 | 2.4% | ···················· |
+| Hong Kong | 33 | 2.2% | ···················· |
+| Indonesia | 21 | 1.4% | ···················· |
 
 ## Attempts by region / city
 
 | City, Region | Attempts | Share |  |
 |---|---|---|---|
-| Amsterdam, North Holland | 335 | 38.0% | ████████············ |
-| Tehran | 133 | 15.1% | ███················· |
-| Cornelius, North Carolina | 105 | 11.9% | ██·················· |
-| Andorra la Vella | 65 | 7.4% | █··················· |
-| Paris, Île-de-France | 47 | 5.3% | █··················· |
-| Pune, Maharashtra | 28 | 3.2% | █··················· |
-| Necochea, Buenos Aires | 20 | 2.3% | ···················· |
-| Haidian, Beijing | 19 | 2.2% | ···················· |
-| Tenno, Trentino-Alto Adige | 19 | 2.2% | ···················· |
-| Johannesburg, Gauteng | 18 | 2.0% | ···················· |
-| La Paz, La Paz Department | 17 | 1.9% | ···················· |
-| Liuxiang, Shanxi | 17 | 1.9% | ···················· |
+| Amsterdam, North Holland | 492 | 32.2% | ██████·············· |
+| Cornelius, North Carolina | 177 | 11.6% | ██·················· |
+| Tehran | 173 | 11.3% | ██·················· |
+| Andorra la Vella | 90 | 5.9% | █··················· |
+| Paris, Île-de-France | 47 | 3.1% | █··················· |
+| Moscow | 34 | 2.2% | ···················· |
+| Hanoi | 28 | 1.8% | ···················· |
+| Pune, Maharashtra | 28 | 1.8% | ···················· |
+| Las Vegas, Nevada | 21 | 1.4% | ···················· |
+| Lusaka, Lusaka Province | 20 | 1.3% | ···················· |
+| Necochea, Buenos Aires | 20 | 1.3% | ···················· |
+| Rushden, England | 20 | 1.3% | ···················· |
 
 ## Targeted usernames
 
 | Username | Attempts | Share |  |
 |---|---|---|---|
-| `root` | 606 | 68.8% | ██████████████······ |
-| `admin` | 28 | 3.2% | █··················· |
-| `test` | 16 | 1.8% | ···················· |
-| `ubuntu` | 16 | 1.8% | ···················· |
-| `deploy` | 8 | 0.9% | ···················· |
-| `minecraft` | 8 | 0.9% | ···················· |
-| `sol` | 6 | 0.7% | ···················· |
-| `azureuser` | 4 | 0.5% | ···················· |
-| `master` | 4 | 0.5% | ···················· |
-| `montse` | 4 | 0.5% | ···················· |
-| `node` | 4 | 0.5% | ···················· |
-| `redash` | 4 | 0.5% | ···················· |
+| `root` | 947 | 62.0% | ████████████········ |
+| `admin` | 91 | 6.0% | █··················· |
+| `test` | 28 | 1.8% | ···················· |
+| `ubuntu` | 28 | 1.8% | ···················· |
+| `deploy` | 10 | 0.7% | ···················· |
+| `ads` | 8 | 0.5% | ···················· |
+| `minecraft` | 8 | 0.5% | ···················· |
+| `svnadmin` | 8 | 0.5% | ···················· |
+| `salomon` | 7 | 0.5% | ···················· |
+| `support` | 7 | 0.5% | ···················· |
+| `user` | 7 | 0.5% | ···················· |
+| `admin1` | 6 | 0.4% | ···················· |
 
 ## Top networks
 
 | Network | Attempts |
 |---|---|
-| `AS48090 TECHOFF SRV LIMITED` | 245 |
-| `AS215930 CIPHER OPERATIONS DOO BEOGRAD - NOVI BEOGRAD` | 133 |
-| `AS197170 TechTies Inc.` | 105 |
-| `AS47890 UNMANAGED LTD` | 93 |
-| `AS216014 BestDC Limited` | 60 |
+| `AS48090 TECHOFF SRV LIMITED` | 325 |
+| `AS47890 UNMANAGED LTD` | 184 |
+| `AS197170 TechTies Inc.` | 177 |
+| `AS215930 CIPHER OPERATIONS DOO BEOGRAD - NOVI BEOGRAD` | 173 |
+| `AS216014 BestDC Limited` | 85 |
 | `AS198364 BANATSYNC SRL` | 47 |
 
 ## First-time attackers
 
-`109.160.32.62` (60), `77.239.124.184` (47), `109.160.32.75` (45), `4.240.96.30` (28), `45.181.45.238` (20), `78.134.49.171` (19), `102.210.149.105` (18), `117.34.85.168` (17), `190.181.25.210` (17), `125.20.16.22` (17), `2.57.122.150` (15), `124.174.32.95` (14), `80.247.110.206` (13), `94.154.43.254` (8), `180.167.207.234` (6), `106.12.148.154` (5), `118.145.240.6` (5), `210.123.88.216` (5), `119.119.6.53` (3), `34.140.22.32` (2), `77.90.185.107` (1)
+`109.160.32.62` (60), `109.160.32.64` (56), `77.239.124.184` (47), `109.160.32.75` (45), `2.57.122.150` (45), `4.240.96.30` (28), `102.23.122.235` (20), `45.181.45.238` (20), `78.134.49.171` (19), `45.119.212.99` (19), `102.210.149.105` (18), `220.246.183.78` (18), `123.25.115.112` (18), `46.191.141.152` (18), `117.34.85.168` (17), `81.211.72.167` (17), `125.20.16.22` (17), `80.253.31.232` (17), `190.181.25.210` (17), `221.162.218.85` (16), `109.160.32.208` (16), `38.224.49.7` (16), `209.141.47.217` (16), `115.178.75.243` (16), `165.154.70.139` (15), `163.7.13.17` (15), `124.174.32.95` (14), `201.149.53.243` (14), `80.247.110.206` (13), `197.153.57.103` (13), `136.36.189.65` (13), `123.25.115.189` (10), `222.71.205.34` (8), `94.154.43.254` (8), `2.57.121.25` (8), `2.57.121.112` (7), `36.151.150.93` (7), `37.187.35.26` (7), `141.95.54.130` (7), `43.129.33.101` (6), `125.122.37.247` (6), `180.167.207.234` (6), `140.150.226.84` (6), `118.145.240.6` (5), `106.12.148.154` (5), `144.172.105.41` (5), `210.123.88.216` (5), `193.46.255.86` (5), `107.189.27.179` (4), `203.150.107.87` (4), `121.229.25.10` (4), `103.159.51.70` (3), `119.119.6.53` (3), `34.140.22.32` (2), `77.90.185.107` (1)
 
 ## Hourly timeline (UTC)
 
 `00:00` ▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇ 63
-`01:00` ▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇ 81
-`02:00` ▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇ 123
-`03:00` ▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇ 77
+`01:00` ▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇ 81
+`02:00` ▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇ 123
+`03:00` ▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇ 77
 `04:00` ▇▇▇▇▇▇▇▇ 33
-`05:00` ▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇ 83
-`06:00` ▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇ 70
-`07:00` ▇▇▇▇▇▇▇▇▇▇▇▇▇▇ 56
+`05:00` ▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇ 83
+`06:00` ▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇ 70
+`07:00` ▇▇▇▇▇▇▇▇▇▇▇▇▇ 56
 `08:00` ▇▇▇▇▇▇▇▇▇▇▇ 46
 `09:00` ▇▇▇▇▇▇▇▇▇▇▇▇▇▇ 59
-`10:00` ▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇ 97
-`11:00` ▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇ 83
-`12:00` ▇▇ 10
+`10:00` ▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇ 97
+`11:00` ▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇ 83
+`12:00` ▇▇▇▇▇▇▇▇▇▇▇ 46
+`13:00` ▇▇▇▇▇▇ 24
+`14:00` ▇▇▇▇▇▇▇▇▇▇ 41
+`15:00` ▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇ 116
+`16:00` ▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇ 129
+`17:00` ▇▇▇▇▇ 23
+`20:00` ▇▇▇ 15
+`21:00` ▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇ 124
+`22:00` ▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇ 78
+`23:00` ▇▇▇▇▇▇▇▇▇▇▇▇▇▇ 60
 
 ## Recommended blocklist
 
@@ -132,15 +141,15 @@ Top offenders of the day, one per line (drop-in for firewall):
 
 ```text
 45.148.10.141
-45.148.10.151
-109.160.32.62
 193.47.62.69
+45.148.10.151
+45.148.10.152
+109.160.32.62
 45.148.10.157
 62.60.130.201
-77.239.124.184
-109.160.32.75
-45.148.10.152
 62.60.130.242
+109.160.32.64
+62.60.130.253
 ```
 
 ```bash
