@@ -11,7 +11,7 @@ description: "1436 SSH brute-force attempts from 71 unique IPs across 25 countri
 
 ## Attack map — 2026-09-21
 
-![Geographic distribution of SSH brute-force attempts on 2026-09-21](ssh-threats-2026-09-21.png)
+<img width="2000" height="1240" alt="ssh-threats-2026-09-21" src="https://github.com/user-attachments/assets/ad545440-7856-4c4b-8760-8fbdb62da787" />
 
 *Live interactive version: Grafana → Security → “SSH Login Attempts — Geohash”.*
 
